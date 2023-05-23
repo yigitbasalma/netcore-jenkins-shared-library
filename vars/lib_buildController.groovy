@@ -21,7 +21,7 @@ def call(Map config) {
         """
 
         if ( config.b_config.controllers.codeQualityTestController ) {
-            lib_codeQualityTestController.finisfScan()
+            load("lib_codeQualityTestController.groovy").finishScan()
         }
     }
 }

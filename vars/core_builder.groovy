@@ -8,10 +8,6 @@ def call(Map config) {
             disableConcurrentBuilds()
         }
 
-        environment {
-            SCANNER_HOME = tool 'SonarScanner for MSBuild'
-        }
-
         parameters {
             string(name: 'BRANCH', description: 'Branch to build', defaultValue: '')
         }

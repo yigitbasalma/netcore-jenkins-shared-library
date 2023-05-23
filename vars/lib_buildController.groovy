@@ -26,10 +26,10 @@ def call(Map config) {
     }
 }
 
-def finishScan() {
-    withSonarQubeEnv(config.sonarqube_env_name) {
+def finishScan(String sonarqube_env_name) {
+    withSonarQubeEnv(sonarqube_env_name) {
         sh """
-        dotnet ${config.sonarqube_home}/SonarScanner.MSBuild.dll end
+        dotnet ${sonarqube_home}/SonarScanner.MSBuild.dll end
         """
     }
 

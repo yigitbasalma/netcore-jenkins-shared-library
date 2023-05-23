@@ -21,12 +21,12 @@ def call(Map config) {
         """
 
         if ( config.b_config.controllers.codeQualityTestController ) {
-            finishScan()
+            finishScan(config.sonarqube_env_name, config.sonarqube_home)
         }
     }
 }
 
-def finishScan(String sonarqube_env_name) {
+def finishScan(String sonarqube_env_name, String sonarqube_home) {
     withSonarQubeEnv(sonarqube_env_name) {
         sh """
         dotnet ${sonarqube_home}/SonarScanner.MSBuild.dll end

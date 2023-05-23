@@ -9,7 +9,7 @@ def call(Map config) {
         }
 
         tools {
-            maven "Maven 3.9.0"
+            tool 'SonarScanner for MSBuild'
         }
 
         parameters {

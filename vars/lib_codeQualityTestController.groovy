@@ -5,8 +5,7 @@ def call(Map config) {
             /key:${config.sonar_qube_project_key} \
             /version:${config.project_full_version} \
             /name:${config.sonar_qube_project_key} \
-            /d:sonar.links.ci=${BUILD_URL} \
-            ${config.b_config.project.solutionFilePath}
+            /d:sonar.links.ci=${BUILD_URL}
         """
     }
 }

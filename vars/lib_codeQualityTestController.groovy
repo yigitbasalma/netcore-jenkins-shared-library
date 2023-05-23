@@ -1,7 +1,7 @@
 def call(Map config) {
     withSonarQubeEnv(config.sonarqube_env_name) {
         sh """
-        ${config.sonarqube_home}/sonar-scanner begin \
+        ${config.sonarqube_home}/SonarScanner.MSBuild.dll begin \
             /k:${config.sonar_qube_project_key} \
             /v:${config.project_full_version} \
             /n:${config.sonar_qube_project_key} \
@@ -14,7 +14,7 @@ def call(Map config) {
 def finisfScan() {
     withSonarQubeEnv(config.sonarqube_env_name) {
         sh """
-        ${config.sonarqube_home}/sonar-scanner end
+        ${config.sonarqube_home}/SonarScanner.MSBuild.dll end
         """
     }
 

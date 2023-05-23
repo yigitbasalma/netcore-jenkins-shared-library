@@ -52,7 +52,7 @@ def call(Map config) {
 
     config.b_config.containerConfig.each { it ->
         // Environments
-        def repoName = it.name.replace("\$Identifier", config.container_repo).replace("_", "-")
+        def repoName = it.name
 
         withCredentials([[$class:"UsernamePasswordMultiBinding", credentialsId: "user-nexus", usernameVariable: "USERNAME", passwordVariable: "PASSWORD"]]) {
             sh """

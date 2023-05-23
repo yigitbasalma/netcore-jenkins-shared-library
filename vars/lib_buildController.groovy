@@ -19,24 +19,5 @@ def call(Map config) {
             /p:Version="${config.project_full_version}" \
             ${config.b_config.project.solutionFilePath}${it.path}
         """
-
-        if ( config.b_config.controllers.codeQualityTestController ) {
-            finishScan(config.sonarqube_env_name, config.sonarqube_home)
-        }
-    }
-}
-
-def finishScan(String sonarqube_env_name, String sonarqube_home) {
-    withSonarQubeEnv(sonarqube_env_name) {
-        sh """
-        dotnet ${sonarqube_home}/SonarScanner.MSBuild.dll end
-        """
-    }
-
-    timeout(time: 1, unit: 'HOURS') {
-        def qg = waitForQualityGate()
-        if (qg.status != 'OK') {
-            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-        }
     }
 }

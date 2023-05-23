@@ -1,7 +1,7 @@
 def call(Map config) {
 
     pipeline {
-        agent any
+        agent {label 'docker-node'}
 
         options {
             buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))

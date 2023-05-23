@@ -8,8 +8,8 @@ def call(Map config) {
             disableConcurrentBuilds()
         }
 
-        tools {
-            tool 'SonarScanner for MSBuild'
+        environment {
+            SCANNER_HOME = tool 'SonarScanner for MSBuild'
         }
 
         parameters {

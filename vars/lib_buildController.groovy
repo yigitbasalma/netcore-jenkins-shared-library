@@ -21,7 +21,22 @@ def call(Map config) {
         """
 
         if ( config.b_config.controllers.codeQualityTestController ) {
-            load("lib_codeQualityTestController.groovy").finishScan()
+            finishScan()
+        }
+    }
+}
+
+def finishScan() {
+    withSonarQubeEnv(config.sonarqube_env_name) {
+        sh """
+        dotnet ${config.sonarqube_home}/SonarScanner.MSBuild.dll end
+        """
+    }
+
+    timeout(time: 1, unit: 'HOURS') {
+        def qg = waitForQualityGate()
+        if (qg.status != 'OK') {
+            error "Pipeline aborted due to quality gate failure: ${qg.status}"
         }
     }
 }

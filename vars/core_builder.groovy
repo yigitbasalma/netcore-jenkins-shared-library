@@ -6,11 +6,6 @@ def call(Map config) {
         options {
             buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
             disableConcurrentBuilds()
-            withCredentials([string(credentialsId: 'teams-webhook-ur', variable: 'URL_WEBHOOK')]) {
-                office365ConnectorWebhooks([
-                    [name: "Kafein", url: "${URL_WEBHOOK}", notifyBackToNormal: true, notifyFailure: true, notifyBuildStart: true, notifySuccess: true, notifyUnstable: true]
-                ])
-            }
         }
 
         parameters {
@@ -190,6 +185,10 @@ def call(Map config) {
                     lib_postbuildController(
                         config
                     )
+                }
+
+                withCredentials([string(credentialsId: 'teams-webhook-ur', variable: 'URL_WEBHOOK')]) {
+                    office365ConnectorSend webhookUrl: "${URL_WEBHOOK}"
                 }
             }
             success {

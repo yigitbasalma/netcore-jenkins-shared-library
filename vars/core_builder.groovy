@@ -187,7 +187,7 @@ def call(Map config) {
                     )
                 }
 
-                withCredentials([string(credentialsId: 'teams-webhook-ur', variable: 'URL_WEBHOOK')]) {
+                withCredentials([string(credentialsId: 'teams-webhook-url', variable: 'URL_WEBHOOK')]) {
                     office365ConnectorSend webhookUrl: "${URL_WEBHOOK}"
                 }
             }

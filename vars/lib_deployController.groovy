@@ -5,6 +5,7 @@ def call(Map config, String sshKeyFile) {
 
     if ( config.scope == "branch" && params.IMAGE == "" ) {
         currentBuild.result = "ABORTED"
+        buildDescription("Error: You have to set IMAGE_ID parameter for branch deployment.")
         error("You have to set IMAGE_ID parameter for branch deployment.")
     }
 

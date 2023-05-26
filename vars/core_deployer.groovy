@@ -53,6 +53,7 @@ def call(Map config) {
                             config.image = params.IMAGE
                         } else {
                             currentBuild.result = "ABORTED"
+                            buildDescription("Error: You have to set IMAGE_ID parameter for branch deployment.")
                             error("You have to set 'IMAGE' parameter.")
                         }
 

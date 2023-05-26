@@ -1,9 +1,7 @@
 def call(Map config) {
 
     pipeline {
-        agent {
-            label "auto-devops"
-        }
+        agent {label 'docker-node'}
 
         parameters {
             string(name: 'IMAGE', defaultValue: '', description: '')

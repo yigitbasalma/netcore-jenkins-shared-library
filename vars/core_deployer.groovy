@@ -73,7 +73,7 @@ def call(Map config) {
                     }
                 }
                 steps {
-                    withCredentials([sshUserPrivateKey(credentialsId: config.scm_credentials_id, keyFileVariable: 'keyfile')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: config.argocd_credentials_id, keyFileVariable: 'keyfile')]) {
                         script {
                             lib_deployController(
                                 config,

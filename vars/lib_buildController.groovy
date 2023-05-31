@@ -20,4 +20,12 @@ def call(Map config) {
             ${config.b_config.project.solutionFilePath}${it.path}
         """
     }
+
+    if ( config.b_config.controllers.codeQualityTestController ) {
+        withSonarQubeEnv(config.sonarqube_env_name) {
+            sh """
+            dotnet ${config.sonarqube_home}/SonarScanner.MSBuild.dll end
+            """
+        }
+    }
 }

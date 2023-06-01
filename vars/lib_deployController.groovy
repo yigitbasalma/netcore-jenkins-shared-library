@@ -3,11 +3,6 @@ def call(Map config, String sshKeyFile) {
     sh "chmod 600 ${sshKeyFile}"
     container_repository = "${config.container_artifact_repo_address}/${config.container_repo}"
 
-    if ( config.scope == "branch" && params.IMAGE == "" ) {
-        currentBuild.result = "ABORTED"
-        error("You have to set IMAGE_ID parameter for branch deployment.")
-    }
-
     config.b_config.deploy.each { it ->
         // Replacing {environment} definition in path for backward compatibility
         path = "${it.path.replace('/{environment}', '')}/{environment}"

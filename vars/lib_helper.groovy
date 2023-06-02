@@ -24,10 +24,9 @@ def configureInit(Map config) {
     // Repo settings
     sh "git config --global --add safe.directory '${WORKSPACE}'"
 
-    // Environment mappings
-    config.environment_mappings = [
-        test: "staging",
-        staging: "production"
+    // Sequential deployment mapping
+    config.sequential_deployment_mapping = [
+        1_Build: "2_DeployToTest"
     ]
 }
 
@@ -41,4 +40,12 @@ def configureBranchDeployment(Map config, String sshKeyFile) {
         ${config.script_base}/branch-controller/controller.py -r ${it.repo} --deploy-config "${yml}" --application-path ${it.path.replace('/{environment}', '')}/branch --branch ${config.target_branch} --key-file "${sshKeyFile}"
         """
     }
+}
+
+def triggerJob() {
+    raw = JOB_NAME.split("/")
+    job_name = raw.last()
+    raw.removeLast()
+    raw.add(raw.size() - 1, config.sequential_deployment_mapping[job_name])
+    build job: "${raw.join('/')}", propagate: false, wait: false, parameters: [string(name: 'IMAGE_ID', value: config.b_config.imageTag)]
 }

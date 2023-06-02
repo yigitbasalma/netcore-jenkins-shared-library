@@ -105,21 +105,7 @@ def call(Map config) {
                 buildDescription("Container ID: ${env.CONTAINER_IMAGE_ID}")
 
                 script {
-                    if ( config.environment == "production" ) {
-                        withCredentials([usernamePassword(credentialsId: 'jira-automation-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            sh """
-                            # 629ef1b2451c00006964feb9 => Korcan Özsuer
-                            python3 ${config.script_base}/jira/main.py \
-                             --container_id ${env.CONTAINER_IMAGE_ID} \
-                             --summary "${config.b_config.project.name} Project" \
-                             --server https://trzipco.atlassian.net \
-                             --user $USERNAME \
-                             --apikey $PASSWORD \
-                             --project_key PRODDEP \
-                             --assignee 629ef1b2451c00006964feb9
-                            """
-                        }
-                    }
+                    lib_helper.triggerJob()
                 }
             }
         }

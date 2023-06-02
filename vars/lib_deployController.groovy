@@ -25,4 +25,16 @@ def argocd(Map config, String image, String repo, String path, String appName, S
     sh """
     ${config.script_base}/argocd/argocd.py --image "${containerRepository}/${appName}:${image}" -r ${repo} --application-path ${path} --environment ${config.environment} --key-file "${sshKeyFile}"
     """
+
+    // check auto sync status for environment
+    if ( config.b_config.containsKey("argocd")
+        && config.b_config.argocd.containsKey(config.environment)
+        && config.b_config.argocd[environment].autoSync) {
+
+        withCredentials([string(credentialsId: config.b_config.argocd[environment].tokenID, variable: 'TOKEN')]) {
+            sh """
+            argocd app sync ${appName} --project ${config.container_repo} --prune --insecure --server ${config.b_config.argocd[environment].url} --auth-token $TOKEN
+            """
+        }
+    }
 }

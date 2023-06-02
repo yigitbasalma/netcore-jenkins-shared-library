@@ -31,7 +31,7 @@ def argocd(Map config, String image, String repo, String path, String appName, S
         && config.b_config.argocd.containsKey(config.environment)
         && config.b_config.argocd[config.environment].autoSync) {
 
-        withCredentials([string(credentialsId: config.b_config.argocd[environment].tokenID, variable: 'TOKEN')]) {
+        withCredentials([string(credentialsId: config.b_config.argocd[config.environment].tokenID, variable: 'TOKEN')]) {
             sh """
             argocd app sync ${appName} --project ${config.container_repo} --prune --insecure --server ${config.b_config.argocd[config.environment].url} --auth-token $TOKEN
             """

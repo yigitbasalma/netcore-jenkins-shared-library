@@ -48,7 +48,7 @@ def call(Map config) {
                             returnStdout: true
                         ).trim()
                         config.job_name = sh(
-                            script: "python3 -c 'print(join(\"/\".(\"${JOB_NAME}\".split(\"/\")[-1])))'",
+                            script: "python3 -c 'print(\"/\".join(\"${JOB_NAME}\".split(\"/\")[-1]))'",
                             returnStdout: true
                         ).trim()
 

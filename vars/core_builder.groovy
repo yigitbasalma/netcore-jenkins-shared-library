@@ -44,11 +44,11 @@ def call(Map config) {
                         config.config_file = ".jenkins/buildspec.yaml"
                         config.b_config = readYaml file: config.config_file
                         config.job_base = sh(
-                            script: "python3 -c 'print(\"${JOB_NAME}\".split(\"/\")[:-1])'",
+                            script: "python3 -c 'print(\"/\".join(\"${JOB_NAME}\".split(\"/\")[-1]))'",
                             returnStdout: true
                         ).trim()
                         config.job_name = sh(
-                            script: "python3 -c 'print(\"/\".join(\"${JOB_NAME}\".split(\"/\")[-1]))'",
+                            script: "python3 -c 'print(\"${JOB_NAME}\".split(\"/\")[-1])'",
                             returnStdout: true
                         ).trim()
 

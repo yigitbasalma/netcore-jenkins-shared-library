@@ -22,6 +22,17 @@ def call(Map config) {
         def repoName = it.name.replace("_", "-").toLowerCase()
         def dockerFilePath = it.dockerFilePath.replace("_", "-")
 
+        if ( it.containsKey('copyToContext') ) {
+            it.copyToContext.each { ti ->
+                def from = ti.from.replace("{commit-id}", config.b_config.imageTag)
+                def to = ti.to.replace("{context-path}", it.contextPath)
+
+                sh """
+                cp -a ${from} ${to}
+                """
+            }
+        }
+
         containerImages.add("${container_repository}/${repoName}:${config.b_config.imageTag} ${dockerFilePath}")
 
         builds["${repoName}"] = {

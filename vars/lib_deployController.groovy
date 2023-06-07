@@ -33,7 +33,7 @@ def argocd(Map config, String image, String repo, String path, String appName, S
 
         withCredentials([string(credentialsId: config.b_config.argocd[config.environment].tokenID, variable: 'TOKEN')]) {
             sh """
-            argocd app sync ${path.split('/')[1]} --project ${config.container_repo} --force --insecure --grpc-web --server ${config.b_config.argocd[config.environment].url} --auth-token $TOKEN
+            argocd app sync ${path.split('/')[1]} --force --insecure --grpc-web --server ${config.b_config.argocd[config.environment].url} --auth-token $TOKEN
             """
         }
     }

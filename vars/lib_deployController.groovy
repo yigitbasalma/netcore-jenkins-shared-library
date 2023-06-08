@@ -16,14 +16,14 @@ def call(Map config, String sshKeyFile) {
             path = "${it.path}/branch/${config.target_branch}"
         }
 
-        "${it.type}"(config, config.image, it.repo, path, it.name, sshKeyFile, container_repository)
+        "${it.type}"(config, config.image, it, path, sshKeyFile, container_repository)
     }
 }
 
-def argocd(Map config, String image, String repo, String path, String appName, String sshKeyFile, String containerRepository) {
+def argocd(Map config, String image, Map r_config, String path, String sshKeyFile, String containerRepository) {
     // Change image version on argocd repo and push
     sh """
-    ${config.script_base}/argocd/argocd.py --image "${containerRepository}/${appName}:${image}" -r ${repo} --application-path ${path} --environment ${config.environment} --key-file "${sshKeyFile}"
+    ${config.script_base}/argocd/argocd.py --image "${containerRepository}/${r_config.name}:${image}" -r ${r_config.repo} --application-path ${path} --environment ${config.environment} --key-file "${sshKeyFile}"
     """
 
     // check auto sync status for environment
@@ -37,4 +37,15 @@ def argocd(Map config, String image, String repo, String path, String appName, S
             """
         }
     }
+}
+
+def nativeK8s(Map config, String image, Map r_config, String path, String sshKeyFile, String containerRepository) {
+    sh """
+    ${config.script_base}/native_k8s/argocd.py \
+        --kubeconfig /opt/k8s-admin-configs/${config.environment}-config \
+        --namespace-selector ${r_config.namespaceSelector} \
+        --deployment-selector ${r_config.appNameSelector} \
+        --image ${image} \
+        --per-namespace ${r_config.deployThread}
+    """
 }

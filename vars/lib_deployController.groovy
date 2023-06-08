@@ -9,18 +9,17 @@ def call(Map config, String sshKeyFile) {
     }
 
     config.b_config.deploy.each { it ->
-        // Replacing {environment} definition in path for backward compatibility
-        path = "${it.path.replace('/{environment}', '')}/{environment}"
-
-        if ( config.scope == "branch" ) {
-            path = "${it.path}/branch/${config.target_branch}"
-        }
-
-        "${it.type}"(config, config.image, it, path, sshKeyFile, container_repository)
+        "${it.type}"(config, config.image, it, sshKeyFile, container_repository)
     }
 }
 
-def argocd(Map config, String image, Map r_config, String path, String sshKeyFile, String containerRepository) {
+def argocd(Map config, String image, Map r_config, String sshKeyFile, String containerRepository) {
+    path = "${it.path.replace('/{environment}', '')}/{environment}"
+
+    if ( config.scope == "branch" ) {
+        path = "${it.path}/branch/${config.target_branch}"
+    }
+
     // Change image version on argocd repo and push
     sh """
     ${config.script_base}/argocd/argocd.py --image "${containerRepository}/${r_config.name}:${image}" -r ${r_config.repo} --application-path ${path} --environment ${config.environment} --key-file "${sshKeyFile}"
@@ -44,7 +43,7 @@ def argocd(Map config, String image, Map r_config, String path, String sshKeyFil
     }
 }
 
-def nativeK8s(Map config, String image, Map r_config, String path, String sshKeyFile, String containerRepository) {
+def nativeK8s(Map config, String image, Map r_config, String sshKeyFile, String containerRepository) {
     sh """
     ${config.script_base}/native_k8s/argocd.py \
         --kubeconfig /opt/k8s-admin-configs/${config.environment}-config \

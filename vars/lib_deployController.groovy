@@ -45,7 +45,7 @@ def argocd(Map config, String image, Map r_config, String sshKeyFile, String con
 
 def nativeK8s(Map config, String image, Map r_config, String sshKeyFile, String containerRepository) {
     sh """
-    ${config.script_base}/native_k8s/argocd.py \
+    ${config.script_base}/native_k8s/deploy.py \
         --kubeconfig /opt/k8s-admin-configs/${config.environment}-config \
         --namespace-selector ${r_config.namespaceSelector} \
         --deployment-selector ${r_config.appNameSelector} \

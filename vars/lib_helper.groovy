@@ -43,10 +43,8 @@ def configureBranchDeployment(Map config, String sshKeyFile) {
 }
 
 def triggerJob(Map config) {
-    if ( ! config.sequential_deployment_mapping.containsKey(config.job_name) ) {
-        return true
+    if ( config.sequential_deployment_mapping.containsKey(config.job_name) ) {
+        next_job_name = config.sequential_deployment_mapping[config.job_name]
+        build job: "${config.job_base}/${next_job_name}", propagate: false, wait: false, parameters: [string(name: 'IMAGE', value: config.b_config.imageTag)]
     }
-
-    next_job_name = config.sequential_deployment_mapping[config.job_name]
-    build job: "${config.job_base}/${next_job_name}", propagate: false, wait: false, parameters: [string(name: 'IMAGE', value: config.b_config.imageTag)]
 }

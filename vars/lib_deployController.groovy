@@ -33,7 +33,12 @@ def argocd(Map config, String image, Map r_config, String path, String sshKeyFil
 
         withCredentials([string(credentialsId: config.b_config.argocd[config.environment].tokenID, variable: 'TOKEN')]) {
             sh """#!/bin/bash
-            argocd app sync ${path.split('/')[1]} --force --insecure --grpc-web --server ${config.b_config.argocd[config.environment].url} --auth-token $TOKEN
+            argocd app sync ${path.split('/')[1]} \
+                --force \
+                --insecure \
+                --grpc-web \
+                --server ${config.b_config.argocd[config.environment].url} \
+                --auth-token $TOKEN || if [ grep "Running" ];then true; fi
             """
         }
     }

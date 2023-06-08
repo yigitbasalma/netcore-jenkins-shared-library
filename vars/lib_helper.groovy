@@ -44,7 +44,7 @@ def configureBranchDeployment(Map config, String sshKeyFile) {
 
 def triggerJob(Map config) {
     if ( ! config.sequential_deployment_mapping.containsKey(config.job_name) ) {
-        return
+        return true
     }
 
     next_job_name = config.sequential_deployment_mapping[config.job_name]

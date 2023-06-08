@@ -49,7 +49,7 @@ def nativeK8s(Map config, String image, Map r_config, String sshKeyFile, String 
         --kubeconfig /opt/k8s-admin-configs/${config.environment}-config \
         --namespace-selector ${r_config.namespaceSelector} \
         --deployment-selector ${r_config.appNameSelector} \
-        --image-id ${config.container_repo}/${image} \
+        --image-id ${containerRepository}:${image} \
         --per-namespace ${r_config.deployThread}
     """
 }

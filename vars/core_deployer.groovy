@@ -109,7 +109,9 @@ def call(Map config) {
                 buildDescription("Container ID: ${env.CONTAINER_IMAGE_ID}")
 
                 script {
-                    lib_helper.triggerJob()
+                    lib_helper.triggerJob(
+                        config
+                    )
                 }
             }
         }

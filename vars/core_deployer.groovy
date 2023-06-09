@@ -104,6 +104,10 @@ def call(Map config) {
                         config
                     )
                 }
+
+                withCredentials([string(credentialsId: 'teams-webhook-url', variable: 'URL_WEBHOOK')]) {
+                    office365ConnectorSend webhookUrl: "${URL_WEBHOOK}"
+                }
             }
             success {
                 buildDescription("Container ID: ${env.CONTAINER_IMAGE_ID}")

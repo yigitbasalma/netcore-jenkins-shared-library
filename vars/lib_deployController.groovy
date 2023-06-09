@@ -14,10 +14,10 @@ def call(Map config, String sshKeyFile) {
 }
 
 def argocd(Map config, String image, Map r_config, String sshKeyFile, String containerRepository) {
-    path = "${it.path.replace('/{environment}', '')}/{environment}"
+    path = "${r_config.path.replace('/{environment}', '')}/{environment}"
 
     if ( config.scope == "branch" ) {
-        path = "${it.path}/branch/${config.target_branch}"
+        path = "${r_config.path}/branch/${config.target_branch}"
     }
 
     // Change image version on argocd repo and push

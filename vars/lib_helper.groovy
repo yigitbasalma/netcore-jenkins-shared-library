@@ -26,7 +26,8 @@ def configureInit(Map config) {
 
     // Sequential deployment mapping
     config.sequential_deployment_mapping = [
-        "1_Build": "2_DeployToTest"
+        "1_Build": "2_DeployToTest",
+        "1_build": "2_deploytotest"
     ]
 }
 

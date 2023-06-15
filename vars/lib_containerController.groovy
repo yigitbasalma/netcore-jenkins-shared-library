@@ -47,7 +47,7 @@ def call(Map config) {
                                 ${extraParams.unique().join(" ")} \
                                 ${buildArgs.unique().join(" ")} \
                                 -f ${dockerFilePath} \
-                                ${it.contextPath}
+                                ${it.contextPath} || true
                             """
                         } catch (Exception e) {
                             currentBuild.result = "ABORTED"

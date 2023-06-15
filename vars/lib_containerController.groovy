@@ -50,8 +50,17 @@ def call(Map config) {
                                 ${it.contextPath}
                             """
                         } catch (Exception e) {
-                            currentBuild.result = "ABORTED"
-                            error("Error occurred when building container images. Image Name: ${it.name}")
+                            state = sh(
+                                script: """
+                                docker image inspect ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag} && echo success || echo failed
+                                """,
+                                returnStdout: true
+                            ).trim()
+
+                            if ( state == "failed" ) {
+                                currentBuild.result = "ABORTED"
+                                error("Error occurred when building container images. Image Name: ${it.name}")
+                            }
                         }
                     }
                 }

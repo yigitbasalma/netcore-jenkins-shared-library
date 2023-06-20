@@ -3,6 +3,11 @@ def call(Map config) {
 
     config.b_config.projects.each { it ->
         def buildArgs = []
+        def mode = "build"
+
+        if ( it.containsKey("mode") ) {
+            mode = it.mode
+        }
 
         if ( config.b_config.containsKey("buildArgs") ) {
             buildArgs.addAll(config.b_config.buildArgs)
@@ -12,8 +17,21 @@ def call(Map config) {
             buildArgs.addAll(it.buildArgs)
         }
 
+        if ( it.containsKey("restore") && it.restore ) {
+            def restoreArgs = []
+
+            if ( it.containsKey("restoreArgs") ) {
+                restoreArgs.addAll(it.restoreArgs)
+            }
+
+            sh """
+            ${config.b_config.project.builderVersion} restore --no-cache \
+                ${restoreArgs.unique().join(" ")}
+            """
+        }
+
         sh """
-        ${config.b_config.project.builderVersion} build -c Release --no-restore \
+        ${config.b_config.project.builderVersion} ${mode} -c Release --no-restore \
             -o ${config.b_config.project.solutionFilePath}${it.path}/out \
             ${buildArgs.unique().join(" ")} \
             /p:Version="${config.project_full_version}" \

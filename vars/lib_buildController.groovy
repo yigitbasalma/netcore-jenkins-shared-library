@@ -24,20 +24,22 @@ def call(Map config) {
                 restoreArgs.addAll(it.restoreArgs)
             }
 
-            sh """
-            ${config.b_config.project.builderVersion} restore --no-cache \
-                ${restoreArgs.unique().join(" ")} \
-                ${config.b_config.project.solutionFilePath}${it.path}
-            """
+            dir("${config.b_config.project.solutionFilePath}${it.path}") {
+                sh """
+                ${config.b_config.project.builderVersion} restore --no-cache \
+                    ${restoreArgs.unique().join(" ")}
+                """
+            }
         }
 
-        sh """
-        ${config.b_config.project.builderVersion} ${mode} -c Release --no-restore \
-            -o ${config.b_config.project.solutionFilePath}${it.path}/out \
-            ${buildArgs.unique().join(" ")} \
-            /p:Version="${config.project_full_version}" \
-            ${config.b_config.project.solutionFilePath}${it.path}
-        """
+        dir("${config.b_config.project.solutionFilePath}${it.path}") {
+            sh """
+            ${config.b_config.project.builderVersion} ${mode} -c Release --no-restore \
+                -o ${config.b_config.project.solutionFilePath}${it.path}/out \
+                ${buildArgs.unique().join(" ")} \
+                /p:Version="${config.project_full_version}"
+            """
+        }
     }
 
     if ( config.b_config.controllers.codeQualityTestController ) {

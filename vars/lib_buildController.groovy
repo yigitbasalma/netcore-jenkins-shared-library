@@ -3,6 +3,7 @@ def call(Map config) {
 
     config.b_config.projects.each { it ->
         def buildArgs = []
+        def restoreArgs = []
         def mode = "build"
 
         if ( it.containsKey("mode") ) {
@@ -18,18 +19,28 @@ def call(Map config) {
         }
 
         if ( it.containsKey("restore") && it.restore ) {
-            def restoreArgs = []
-
             if ( it.containsKey("restoreArgs") ) {
                 restoreArgs.addAll(it.restoreArgs)
             }
+        }
 
-            dir("${config.b_config.project.solutionFilePath}${it.path}") {
-                sh """
-                ${config.b_config.project.builderVersion} restore --no-cache \
-                    ${restoreArgs.unique().join(" ")}
-                """
+        dir("${config.b_config.project.solutionFilePath}${it.path}") {
+            if ( config.b_config.controllers.codeQualityTestController ) {
+                withSonarQubeEnv(config.sonarqube_env_name) {
+                    sh """
+                    dotnet ${config.sonarqube_home}/SonarScanner.MSBuild.dll begin \
+                        /key:${config.sonar_qube_project_key} \
+                        /version:${config.project_full_version} \
+                        /name:${config.sonar_qube_project_key} \
+                        /d:sonar.links.ci=${BUILD_URL}
+                    """
+                }
             }
+
+            sh """
+            ${config.b_config.project.builderVersion} restore --no-cache \
+                ${restoreArgs.unique().join(" ")}
+            """
         }
 
         dir("${config.b_config.project.solutionFilePath}${it.path}") {
@@ -39,14 +50,14 @@ def call(Map config) {
                 ${buildArgs.unique().join(" ")} \
                 /p:Version="${config.project_full_version}"
             """
-        }
-    }
 
-    if ( config.b_config.controllers.codeQualityTestController ) {
-        withSonarQubeEnv(config.sonarqube_env_name) {
-            sh """
-            dotnet ${config.sonarqube_home}/SonarScanner.MSBuild.dll end
-            """
+            if ( config.b_config.controllers.codeQualityTestController ) {
+                withSonarQubeEnv(config.sonarqube_env_name) {
+                    sh """
+                    dotnet ${config.sonarqube_home}/SonarScanner.MSBuild.dll end
+                    """
+                }
+            }
         }
     }
 }

@@ -100,22 +100,6 @@ def call(Map config) {
                 }
             }
 
-            stage("Run SonarQube Code Quality") {
-                when {
-                    expression {
-                        return config.b_config.controllers.codeQualityTestController &&
-                            config.b_config.controllers.buildController
-                    }
-                }
-                steps {
-                    script {
-                        lib_codeQualityTestController(
-                            config
-                        )
-                    }
-                }
-            }
-
             stage("Build Project") {
                 when {
                     expression {

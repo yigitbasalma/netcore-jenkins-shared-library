@@ -35,7 +35,7 @@ def call(Map config) {
         dir("${config.b_config.project.solutionFilePath}${it.path}") {
             sh """
             ${config.b_config.project.builderVersion} ${mode} -c Release --no-restore \
-                -o ${config.b_config.project.solutionFilePath}${it.path}/out \
+                -o out \
                 ${buildArgs.unique().join(" ")} \
                 /p:Version="${config.project_full_version}"
             """

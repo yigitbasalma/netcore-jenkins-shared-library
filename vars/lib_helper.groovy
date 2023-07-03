@@ -15,7 +15,7 @@ def configureInit(Map config) {
         config.scope = "branch"
     }
 
-    sh "env"
+    sh "${params.BRANCH}"
 
     buildName "${config.target_branch} - ${env.BUILD_NUMBER}"
 

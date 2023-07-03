@@ -13,6 +13,24 @@ def call(Map config) {
             string(name: 'BRANCH', description: 'Branch to build', defaultValue: '')
         }
 
+        triggers {
+            GenericTrigger(
+                genericVariables: [
+                    [key: 'BITBUCKET_BRANCH', value: '$.push.changes.0.old.name'],
+                ],
+
+                 causeString: 'Triggered by Bıtbucket',
+                 token: 'bitbucket_' + config.sonar_qube_project_key,
+
+                 printContributedVariables: true,
+                 printPostContent: true,
+
+                 silentResponse: false,
+
+                 shouldNotFlattern: false,
+            )
+        }
+
         stages {
             stage("Configure Init") {
                 steps {

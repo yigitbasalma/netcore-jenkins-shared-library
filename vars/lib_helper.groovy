@@ -19,6 +19,8 @@ def configureInit(Map config) {
         config.target_branch = env.BITBUCKET_TARGET_BRANCH
     }
 
+    sh "env"
+
     buildName "${config.target_branch} - ${env.BUILD_NUMBER}"
 
     // SonarQube settings

@@ -15,7 +15,7 @@ def configureInit(Map config) {
         config.scope = "branch"
     }
 
-    if ( env.containsKey("BITBUCKET_TARGET_BRANCH") ) {
+    if ( env.BITBUCKET_TARGET_BRANCH ) {
         config.target_branch = env.BITBUCKET_TARGET_BRANCH
     }
 

@@ -18,16 +18,15 @@ def call(Map config) {
                 genericVariables: [
                     [key: 'REF', value: '$.push.changes[0].old.name'],
                 ],
-
                  causeString: 'Triggered by Bıtbucket',
                  token: 'bitbucket_' + config.sonar_qube_project_key,
-
                  printContributedVariables: false,
                  printPostContent: false,
-
                  silentResponse: false,
-
                  shouldNotFlattern: false,
+
+                 regexpFilterText: 'REF',
+                 regexpFilterExpression: '^(development|uat)'
             )
         }
 

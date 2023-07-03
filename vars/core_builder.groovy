@@ -16,7 +16,7 @@ def call(Map config) {
         triggers {
             GenericTrigger(
                 genericVariables: [
-                    [key: 'BRANCH', value: '$.push.changes[0].old.name'],
+                    [key: 'REF', value: '$.push.changes[0].old.name'],
                 ],
 
                  causeString: 'Triggered by Bıtbucket',

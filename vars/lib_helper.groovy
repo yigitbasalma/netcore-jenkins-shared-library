@@ -15,6 +15,10 @@ def configureInit(Map config) {
         config.scope = "branch"
     }
 
+    if ( env.REF ) {
+        config.target_branch = env.REF
+    }
+
     buildName "${config.target_branch} - ${env.BUILD_NUMBER}"
 
     // SonarQube settings

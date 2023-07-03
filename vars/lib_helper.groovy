@@ -15,6 +15,10 @@ def configureInit(Map config) {
         config.scope = "branch"
     }
 
+    if ( env.containsKey("BITBUCKET_TARGET_BRANCH") ) {
+        config.target_branch = env.BITBUCKET_TARGET_BRANCH
+    }
+
     buildName "${config.target_branch} - ${env.BUILD_NUMBER}"
 
     // SonarQube settings

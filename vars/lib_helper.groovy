@@ -15,11 +15,6 @@ def configureInit(Map config) {
         config.scope = "branch"
     }
 
-    if ( env.BITBUCKET_PAYLOAD ) {
-        payload = readJSON text: env.BITBUCKET_PAYLOAD
-        config.target_branch = payload["push"]["changes"][0]["old"]["name"]
-    }
-
     buildName "${config.target_branch} - ${env.BUILD_NUMBER}"
 
     // SonarQube settings

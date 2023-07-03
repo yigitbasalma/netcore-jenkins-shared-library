@@ -22,8 +22,8 @@ def call(Map config) {
                  causeString: 'Triggered by Bıtbucket',
                  token: 'bitbucket_' + config.sonar_qube_project_key,
 
-                 printContributedVariables: true,
-                 printPostContent: true,
+                 printContributedVariables: false,
+                 printPostContent: false,
 
                  silentResponse: false,
 

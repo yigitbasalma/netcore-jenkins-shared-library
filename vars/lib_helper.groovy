@@ -20,6 +20,10 @@ def configureInit(Map config) {
         config.target_branch = payload["push"]["changes"][0]["old"]["name"]
     }
 
+    if ( BITBUCKET_BRANCH && BITBUCKET_BRANCH != "" ) {
+        config.target_branch = BITBUCKET_BRANCH
+    }
+
     buildName "${config.target_branch} - ${env.BUILD_NUMBER}"
 
     // SonarQube settings

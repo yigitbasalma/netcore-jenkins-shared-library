@@ -34,10 +34,6 @@ def configureInit(Map config) {
         "1_Build": "2_DeployToTest",
         "1_build": "2_deploy_to_test"
     ]
-
-    if ( config.b_config.containsKey("sequentialDeploymentMapping") ) {
-        config.sequential_deployment_mapping = config.b_config.sequentialDeploymentMapping[config.environment]
-    }
 }
 
 def configureBranchDeployment(Map config, String sshKeyFile) {

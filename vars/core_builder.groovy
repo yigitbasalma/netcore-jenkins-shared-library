@@ -65,6 +65,10 @@ def call(Map config) {
                         config.b_config.imageLatestTag = "latest"
 
                         config.commitID = commitID
+
+                        if ( config.b_config.containsKey("sequentialDeploymentMapping") ) {
+                            config.sequential_deployment_mapping = config.b_config.sequentialDeploymentMapping[config.environment]
+                        }
                     }
                 }
             }

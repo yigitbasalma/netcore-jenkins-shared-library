@@ -15,11 +15,10 @@ def configureInit(Map config) {
         config.scope = "branch"
     }
 
-    if ( env.BITBUCKET_TARGET_BRANCH ) {
-        config.target_branch = env.BITBUCKET_TARGET_BRANCH
+    if ( env.BITBUCKET_PAYLOAD ) {
+        payload = readJSON text: env.BITBUCKET_PAYLOAD
+        config.target_branch = payload["push"]["changes"][0]["old"]["name"]
     }
-
-    sh "env"
 
     buildName "${config.target_branch} - ${env.BUILD_NUMBER}"
 

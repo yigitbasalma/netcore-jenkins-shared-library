@@ -69,7 +69,7 @@ def call(Map config) {
                         config.commitID = commitID
 
                         if ( config.b_config.containsKey("sequentialDeploymentMapping") ) {
-                            config.sequential_deployment_mapping = config.b_config.sequentialDeploymentMapping[config.environment]
+                            config.sequential_deployment_mapping = config.b_config.sequentialDeploymentMapping[config.target_branch]
                         }
                     }
                 }

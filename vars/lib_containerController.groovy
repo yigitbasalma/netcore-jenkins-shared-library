@@ -12,7 +12,7 @@ def call(Map config) {
     def builds = [:]
     def container_repository = "${config.container_artifact_repo_address}"
 
-    if ( config.container_repo ) {
+    if ( config.container_repo != "" ) {
         container_repository = "${config.container_artifact_repo_address}/${config.container_repo}"
     }
 

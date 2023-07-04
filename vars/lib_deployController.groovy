@@ -1,7 +1,11 @@
 def call(Map config, String sshKeyFile) {
     // SSH key file permission
     sh "chmod 600 ${sshKeyFile}"
-    container_repository = "${config.container_artifact_repo_address}/${config.container_repo}"
+    container_repository = "${config.container_artifact_repo_address}"
+
+    if ( config.container_repo != "" ) {
+        container_repository = "${config.container_artifact_repo_address}/${config.container_repo}"
+    }
 
     if ( config.scope == "branch" && params.IMAGE == "" ) {
         currentBuild.result = "ABORTED"

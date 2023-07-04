@@ -56,7 +56,7 @@ def call(Map config) {
                         } catch (Exception e) {
                             state = sh(
                                 script: """
-                                docker image inspect ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag} && echo success || echo failed
+                                docker image inspect ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag} 2> /dev/null && echo success || echo failed
                                 """,
                                 returnStdout: true
                             ).trim()

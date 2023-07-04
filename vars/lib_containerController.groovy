@@ -10,7 +10,11 @@ def call(Map config) {
 
     // Define constraints
     def builds = [:]
-    def container_repository = "${config.container_artifact_repo_address}/${config.container_repo}"
+    def container_repository = "${config.container_artifact_repo_address}"
+
+    if ( config.container_repo ) {
+        container_repository = "${config.container_artifact_repo_address}/${config.container_repo}"
+    }
 
     buildDescription("Container ID: ${config.b_config.imageTag}")
 

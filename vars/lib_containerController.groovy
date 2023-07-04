@@ -81,8 +81,10 @@ def call(Map config) {
         withCredentials([[$class:"UsernamePasswordMultiBinding", credentialsId: "user-nexus", usernameVariable: "USERNAME", passwordVariable: "PASSWORD"]]) {
             sh """
             docker login --username $USERNAME --password $PASSWORD ${container_repository}
-                docker push  ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageLatestTag} && \
-                docker push  ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag}
+                docker push ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageLatestTag} && \
+                docker push ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag} && \
+                docker rmi ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageLatestTag} && \
+                docker rmi ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag}
             """
         }
     }

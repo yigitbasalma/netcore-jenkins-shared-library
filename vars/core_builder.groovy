@@ -25,7 +25,7 @@ def call(Map config) {
                  silentResponse: false,
                  shouldNotFlattern: false,
 
-                 regexpFilterText: 'REF',
+                 regexpFilterText: '$REF',
                  regexpFilterExpression: '^(development|uat)'
             )
         }

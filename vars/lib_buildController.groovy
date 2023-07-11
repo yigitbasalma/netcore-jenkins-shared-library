@@ -1,5 +1,9 @@
 def call(Map config) {
-    sh "${config.b_config.project.builderVersion} restore --no-cache ${config.b_config.project.solutionFilePath}"
+    try {
+        sh "${config.b_config.project.builderVersion} restore --no-cache ${config.b_config.project.solutionFilePath}"
+    } catch (Exception e) {
+        sh "${config.b_config.project.builderVersion} restore --no-cache ${config.b_config.project.solutionFilePath}/${config.b_config.project.0.path}"
+    }
 
     config.b_config.projects.each { it ->
         def buildArgs = []

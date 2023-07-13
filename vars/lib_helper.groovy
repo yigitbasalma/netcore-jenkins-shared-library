@@ -33,6 +33,12 @@ def configureInit(Map config) {
         "1_Build": "2_DeployToTest",
         "1_build": "2_deploy_to_test"
     ]
+
+    config.permit_trigger_branch = [
+        "development",
+        "dev",
+        "uat"
+    ]
 }
 
 def configureBranchDeployment(Map config, String sshKeyFile) {
@@ -48,7 +54,7 @@ def configureBranchDeployment(Map config, String sshKeyFile) {
 }
 
 def triggerJob(Map config) {
-    if ( config.sequential_deployment_mapping.containsKey(config.job_name) ) {
+    if ( config.sequential_deployment_mapping.containsKey(config.job_name) && config.permit_trigger_branch.containsKey(config.target_branch) ) {
         next_job_name = config.sequential_deployment_mapping[config.job_name]
         build job: "${config.job_base}/${next_job_name}", propagate: false, wait: false, parameters: [string(name: 'IMAGE', value: config.b_config.imageTag)]
     }

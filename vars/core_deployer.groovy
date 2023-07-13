@@ -4,7 +4,8 @@ def call(Map config) {
         agent {label 'docker-node'}
 
         parameters {
-            string(name: 'IMAGE', defaultValue: '', description: '')
+            string(name: 'IMAGE', defaultValue: '', description: ''),
+            string(name: 'TARGETS', defaultValue: '', description: '')
         }
 
         stages {

@@ -48,10 +48,16 @@ def argocd(Map config, String image, Map r_config, String sshKeyFile, String con
 }
 
 def nativeK8s(Map config, String image, Map r_config, String sshKeyFile, String containerRepository) {
+    namespaceSelector = r_config.namespaceSelector
+
+    if ( params.containsKey("TARGETS") && params.TARGETS != "" ) {
+        namespaceSelector = "(${params.TARGETS.trim().replace(',', '|')})-namespace"
+    }
+
     sh """
     ${config.script_base}/native_k8s/deploy.py \
         --kubeconfig /opt/k8s-admin-configs/${config.environment}-config \
-        --namespace-selector ${r_config.namespaceSelector} \
+        --namespace-selector ${namespaceSelector} \
         --deployment-selector ${r_config.appNameSelector} \
         --image-id ${containerRepository}/${config.b_config.project.name}:${image} \
         --per-namespace ${r_config.deployThread}

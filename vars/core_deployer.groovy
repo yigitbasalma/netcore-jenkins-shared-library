@@ -110,8 +110,14 @@ def call(Map config) {
                     )
                 }
 
-                withCredentials([string(credentialsId: 'teams-webhook-url', variable: 'URL_WEBHOOK')]) {
-                    office365ConnectorSend webhookUrl: "${URL_WEBHOOK}"
+                script {
+                    try {
+                        withCredentials([string(credentialsId: 'teams-webhook-url', variable: 'URL_WEBHOOK')]) {
+                            office365ConnectorSend webhookUrl: "${URL_WEBHOOK}"
+                        }
+                    } catch (_) {
+                        echo "Teams credential does not exists, skipping."
+                    }
                 }
             }
             success {

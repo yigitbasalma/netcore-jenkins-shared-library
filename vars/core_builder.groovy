@@ -81,6 +81,10 @@ def call(Map config) {
                         config.b_config.imageTag = commitID
                         config.b_config.imageLatestTag = "latest"
 
+                        if ( config.scope == "branch" ) {
+                            config.b_config.imageLatestTag = "${config.target_branch}-latest"
+                        }
+
                         config.commitID = commitID
 
                         if ( config.b_config.containsKey("sequentialDeploymentMapping") ) {

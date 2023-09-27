@@ -53,7 +53,7 @@ def nativeK8s(Map config, String image, Map r_config, String containerRepository
 
     if ( params.containsKey("TARGETS") && params.TARGETS != "" ) {
         _targets = params.TARGETS.trim().replace(',', '|')
-        namespaceSelector = "(${_targets})-namespace"
+        namespaceSelector = "\(${_targets}\)-namespace"
     }
 
     sh """

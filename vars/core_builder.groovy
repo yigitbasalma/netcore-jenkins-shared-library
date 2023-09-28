@@ -81,7 +81,7 @@ def call(Map config) {
                         config.b_config.imageTag = commitID
                         config.b_config.imageLatestTag = "latest"
 
-                        if ( config.scope == "branch" and !config.permit_trigger_branch.contains(config.target_branch) ) {
+                        if ( config.scope == "branch" && !config.permit_trigger_branch.contains(config.target_branch) ) {
                             config.b_config.imageLatestTag = "${config.target_branch}-latest"
                         }
 

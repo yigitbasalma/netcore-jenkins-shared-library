@@ -6,7 +6,7 @@ def call(Map config) {
 
     if ( config.containsKey("docker_volume_prune") && config.docker_volume_prune ) {
         sh """
-        docker system prune --volumes -f
+        docker system prune -a -f
         """
     }
 }

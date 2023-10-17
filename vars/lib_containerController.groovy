@@ -37,6 +37,10 @@ def call(Map config) {
             }
         }
 
+        if ( config.containsKey("docker_no_cache") && config.docker_no_cache ) {
+            extraParams.add("--no-cache")
+        }
+
         containerImages.add("${container_repository}/${repoName}:${config.b_config.imageTag} ${dockerFilePath}")
 
         builds["${repoName}"] = {

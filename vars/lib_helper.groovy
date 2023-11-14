@@ -26,7 +26,7 @@ def configureInit(Map config) {
     config.sonarqube_home = tool config.sonarqube_env_name
 
     // Repo settings
-    sh "git config --global --add safe.directory '${WORKSPACE}'"
+    // sh "git config --global --add safe.directory '${WORKSPACE}'"
 
     // Sequential deployment mapping
     config.sequential_deployment_mapping = [

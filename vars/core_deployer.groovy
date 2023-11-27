@@ -5,7 +5,7 @@ def call(Map config) {
 
         parameters {
             string(name: 'IMAGE', defaultValue: '', description: '')
-            string(name: 'TARGETS', defaultValue: '', description: '')
+            string(name: 'BRANCH', description: '', defaultValue: '')
         }
 
         stages {

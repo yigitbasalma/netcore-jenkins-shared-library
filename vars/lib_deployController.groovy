@@ -52,8 +52,8 @@ def nativeK8s(Map config, String image, Map r_config, String containerRepository
     sh """
     ${config.script_base}/native_k8s/deploy.py \
         --kubeconfig /opt/k8s-admin-configs/${config.environment}-config \
-        --namespace-selector ${r_config.namespaceSelector} \
-        --deployment-selector ${r_config.appNameSelector} \
+        --namespace-selector "${r_config.namespaceSelector}" \
+        --deployment-selector "${r_config.appNameSelector}" \
         --image-id ${containerRepository}/${config.b_config.project.name}:${image} \
         --per-namespace ${r_config.deployThread}
     """

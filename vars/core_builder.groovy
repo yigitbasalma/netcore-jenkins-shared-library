@@ -91,9 +91,7 @@ def call(Map config) {
                             config.sequential_deployment_mapping = config.b_config.sequentialDeploymentMapping[config.target_branch]
                         }
 
-                        if ( config.b_config.containsKey("triggerDeploy") ) {
-                            config.permit_trigger_branch = [config.target_branch]
-                        }
+
                     }
                 }
             }

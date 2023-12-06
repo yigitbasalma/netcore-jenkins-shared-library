@@ -59,7 +59,7 @@ def triggerJob(Map config) {
     try {
         if ( config.sequential_deployment_mapping.containsKey(config.job_name) && config.permit_trigger_branch.contains(config.target_branch) ) {
             next_job_name = config.sequential_deployment_mapping[config.job_name]
-            build job: "${config.job_base}/${next_job_name}", propagate: false, wait: false, parameters: [string(name: 'IMAGE', value: config.b_config.imageTag)]
+            build job: "${config.job_base}/${next_job_name}", propagate: false, wait: false, parameters: [string(name: 'IMAGE', value: config.b_config.imageTag), string(name: 'BRANCH', value: config.target_branch)]
         }
     } catch (Exception e) {
         echo "No job found for trigger."

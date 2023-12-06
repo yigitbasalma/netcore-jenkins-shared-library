@@ -92,6 +92,15 @@ def call(Map config) {
                         }
 
                         if ( config.b_config.containsKey("triggerDeploy") ) {
+                            config.b_config.deploy.each { it ->
+                                if ( it.type in ["nativeK8s"] ) {
+                                    if ( it.namespaceSelector.startsWith(".*") ) {
+                                        currentBuild.result = "ABORTED"
+                                        error("You cannot use wildcard namespace pattern when build branch.")
+                                    }
+                                }
+                            }
+
                             config.permit_trigger_branch = [config.target_branch]
                         }
                     }

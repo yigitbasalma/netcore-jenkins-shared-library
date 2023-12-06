@@ -12,7 +12,10 @@ def configureInit(Map config) {
     // Configure branch from params
     if ( params.containsKey("BRANCH") && params.BRANCH != "" ) {
         config.target_branch = params.BRANCH
-        config.scope = "branch"
+
+        if ( params.BRANCH != config.target_branch ) {
+          config.scope = "branch"
+        }
     }
 
     if ( env.REF ) {

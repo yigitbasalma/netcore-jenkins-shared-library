@@ -18,7 +18,7 @@ def call(Map config) {
 def argocd(Map config, String image, Map r_config, String containerRepository) {
     path = "${r_config.path.replace('/{environment}', '')}/{environment}"
 
-    if ( config.scope == "branch" ) {
+    if ( config.containsKey("branch_build") ) {
         path = "${r_config.path}/branch/${config.target_branch}"
     }
 

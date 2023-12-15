@@ -4,7 +4,7 @@ def call(Map config) {
         agent {label 'docker-node'}
 
         options {
-            timeout(time: 25, unit: 'MINUTES')
+            timeout(time: 45, unit: 'MINUTES')
             buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
             disableConcurrentBuilds()
         }

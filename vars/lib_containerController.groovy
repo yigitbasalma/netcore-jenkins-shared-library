@@ -44,7 +44,7 @@ def call(Map config) {
         containerImages.add("${container_repository}/${repoName}:${config.b_config.imageTag} ${dockerFilePath}")
 
         builds["${repoName}"] = {
-            timeout(time: 25, unit: "MINUTES") {
+            timeout(time: 45, unit: "MINUTES") {
                 stage("Building ${repoName}") {
                     script {
                         try {

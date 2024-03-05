@@ -16,7 +16,7 @@ def call(Map config) {
         triggers {
             GenericTrigger(
                 genericVariables: [
-                    [key: 'REF', value: '$.push.changes[0].old.name'],
+                    [key: 'REF', value: config.containsKey('trigger_ref') ? config.trigger_Ref : '$.ref'],
                 ],
                  causeString: 'Triggered by Bıtbucket',
                  token: 'bitbucket_' + config.sonar_qube_project_key,
@@ -26,7 +26,7 @@ def call(Map config) {
                  shouldNotFlattern: false,
 
                  regexpFilterText: '$REF',
-                 regexpFilterExpression: '^(development|uat)'
+                 regexpFilterExpression: config.containsKey('trigger_regexp_filter') ? config.trigger_regexp_filter : '.*'
             )
         }
 

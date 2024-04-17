@@ -26,6 +26,10 @@ def call(Map config) {
         def repoName = it.name.replace("_", "-").toLowerCase()
         def dockerFilePath = it.dockerFilePath.replace("_", "-")
 
+        if ( it.containsKey("preserveDockerFilePath") && it.preserveDockerFilePath ) {
+          def dockerFilePath = it.dockerFilePath
+        }
+
         if ( it.containsKey('copyToContext') ) {
             it.copyToContext.each { ti ->
                 def from = ti.from.replace("{commit-id}", config.b_config.imageTag)

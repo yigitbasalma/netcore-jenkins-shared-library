@@ -27,7 +27,7 @@ def call(Map config) {
         def dockerFilePath = it.dockerFilePath.replace("_", "-")
 
         if ( it.containsKey("preserveDockerFilePath") && it.preserveDockerFilePath ) {
-          def dockerFilePath = it.dockerFilePath
+          dockerFilePath = it.dockerFilePath
         }
 
         if ( it.containsKey('copyToContext') ) {

@@ -43,7 +43,12 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
             }
 
             sh """#!/bin/bash
-            argocd app get ${appName}
+            argocd app get ${appName} \
+                --force \
+                --insecure \
+                --grpc-web \
+                --server ${config.b_config.argocd[config.environment].url} \
+                --auth-token $TOKEN || if grep "Running";then true; fi
             """
 
             sh """#!/bin/bash

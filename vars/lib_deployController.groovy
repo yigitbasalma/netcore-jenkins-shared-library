@@ -67,7 +67,7 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                     --project ${appNamespace} \
                     --dest-server https://kubernetes.default.svc \
                     --directory-recurse \
-                    --sync-option Prune=false \
+                    --auto-prune \
                     --insecure \
                     --grpc-web \
                     --server ${config.b_config.argocd[config.environment].url} \

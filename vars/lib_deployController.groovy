@@ -47,7 +47,7 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                 --insecure \
                 --grpc-web \
                 --server ${config.b_config.argocd[config.environment].url} \
-                --auth-token $TOKEN || if grep "Running";then true; fi
+                --auth-token $TOKEN 2>&1 > /dev/null || echo "App does not exists" && echo "App exists"
             """
 
             sh """#!/bin/bash

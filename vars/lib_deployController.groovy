@@ -58,6 +58,8 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                 returnStdout: true
             ).trim()
 
+            println(appExists)
+
             if ( appExists == "false" ) {
                 sh """#!/bin/bash
                 argocd app create ${appName} \

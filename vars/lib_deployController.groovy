@@ -71,7 +71,7 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                 sh """#!/bin/bash
                 argocd app create ${appName} \
                     --repo ${r_config.repo} \
-                    --path ${path} \
+                    --path ${path.replace('{environment}', config.environment)} \
                     --dest-namespace ${appNamespace} \
                     --project ${appNamespace} \
                     --dest-server https://kubernetes.default.svc \
@@ -80,7 +80,7 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                     --insecure \
                     --grpc-web \
                     --server ${config.b_config.argocd[config.environment].url} \
-                    --auth-token $TOKEN || if grep "Running";then true; fi
+                    --auth-token $TOKEN
                 """
             }
         }

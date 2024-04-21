@@ -53,7 +53,7 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                     --insecure \
                     --grpc-web \
                     --server ${config.b_config.argocd[config.environment].url} \
-                    --auth-token $TOKEN 2>&1 > /dev/null || echo false && echo true
+                    --auth-token $TOKEN 2>&1 > /dev/null || echo false
                 """,
                 returnStdout: true
             ).trim()

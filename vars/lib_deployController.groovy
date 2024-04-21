@@ -36,8 +36,18 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
         && config.b_config.argocd[config.environment].autoSync) {
 
         withCredentials([string(credentialsId: config.b_config.argocd[config.environment].tokenID, variable: 'TOKEN')]) {
+            def appName = path.split('/')[1]
+
+            if ( r_config.containsKey("alias") ) {
+                appName = r_config.alias
+            }
+
             sh """#!/bin/bash
-            argocd app sync ${path.split('/')[1]} \
+            argocd app get ${appName}
+            """
+
+            sh """#!/bin/bash
+            argocd app sync ${appName} \
                 --force \
                 --insecure \
                 --grpc-web \

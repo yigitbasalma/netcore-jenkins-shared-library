@@ -58,16 +58,7 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                 returnStdout: true
             ).trim()
 
-            if ( appExists == "true" ) {
-                sh """#!/bin/bash
-                argocd app sync ${appName} \
-                    --force \
-                    --insecure \
-                    --grpc-web \
-                    --server ${config.b_config.argocd[config.environment].url} \
-                    --auth-token $TOKEN || if grep "Running";then true; fi
-                """
-            } else {
+            if ( appExists == "false" ) {
                 sh """#!/bin/bash
                 argocd app create ${appName} \
                     --repo ${r_config.repo} \
@@ -83,6 +74,15 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                     --auth-token $TOKEN
                 """
             }
+
+            sh """#!/bin/bash
+            argocd app sync ${appName} \
+                --force \
+                --insecure \
+                --grpc-web \
+                --server ${config.b_config.argocd[config.environment].url} \
+                --auth-token $TOKEN || if grep "Running";then true; fi
+            """
         }
     }
 }

@@ -48,7 +48,7 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
             }
 
             def appExists = sh(
-                script: sh """#!/bin/bash
+                script: """#!/bin/bash
                 argocd app get ${appName} \
                     --insecure \
                     --grpc-web \

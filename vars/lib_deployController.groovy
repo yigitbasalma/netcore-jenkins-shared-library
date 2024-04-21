@@ -37,27 +37,37 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
 
         withCredentials([string(credentialsId: config.b_config.argocd[config.environment].tokenID, variable: 'TOKEN')]) {
             def appName = path.split('/')[1]
+            def appNamespace = path.split('/')[0]
 
             if ( r_config.containsKey("alias") ) {
                 appName = r_config.alias
             }
 
-            sh """#!/bin/bash
-            argocd app get ${appName} \
-                --insecure \
-                --grpc-web \
-                --server ${config.b_config.argocd[config.environment].url} \
-                --auth-token $TOKEN 2>&1 > /dev/null || echo "App does not exists" && echo "App exists"
-            """
+            if ( r_config.containsKey("namespace") ) {
+                appNamespace = r_config.namespace
+            }
 
-            sh """#!/bin/bash
-            argocd app sync ${appName} \
-                --force \
-                --insecure \
-                --grpc-web \
-                --server ${config.b_config.argocd[config.environment].url} \
-                --auth-token $TOKEN || if grep "Running";then true; fi
-            """
+            def appExists = sh(
+                script: sh """#!/bin/bash
+                argocd app get ${appName} \
+                    --insecure \
+                    --grpc-web \
+                    --server ${config.b_config.argocd[config.environment].url} \
+                    --auth-token $TOKEN 2>&1 > /dev/null || echo false && echo true
+                """,
+                returnStdout: true
+            ).trim()
+
+            if ( appExists == "true" ) {
+                sh """#!/bin/bash
+                argocd app sync ${appName} \
+                    --force \
+                    --insecure \
+                    --grpc-web \
+                    --server ${config.b_config.argocd[config.environment].url} \
+                    --auth-token $TOKEN || if grep "Running";then true; fi
+                """
+            }
         }
     }
 }

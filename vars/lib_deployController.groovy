@@ -77,7 +77,6 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
                     --dest-server https://kubernetes.default.svc \
                     --directory-recurse \
                     --sync-option Prune=false \
-                    --force \
                     --insecure \
                     --grpc-web \
                     --server ${config.b_config.argocd[config.environment].url} \

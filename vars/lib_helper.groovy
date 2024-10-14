@@ -43,6 +43,7 @@ def configureInit(Map config) {
         "uat",
         "test",
         "devops",
+        "devopstest",
         "devops-preprod"
     ]
 }

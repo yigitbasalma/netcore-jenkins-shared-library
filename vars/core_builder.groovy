@@ -88,6 +88,16 @@ def call(Map config) {
                         config.b_config.imageTag = commitID
                         config.b_config.imageLatestTag = "latest"
 
+                        if ( config.containsKey("overrideImageTag" && config.overrideImageTag ) ) {
+                            newTagPart = sh(
+                                script: "python3 -c 'import datetime; print(datetime.datetime.now().strftime(\"%Y%m%d%H%M%S\"))'",
+                                returnStdout: true
+                            ).trim()
+
+                            config.b_config.imageTag = newTagPart + commitID
+                            config.b_config.imageLatestTag = newTagPart + "latest"
+                        }
+
                         if ( config.scope == "branch" && !config.permit_trigger_branch.contains(config.target_branch) ) {
                             config.b_config.imageLatestTag = "${config.target_branch.replace('/', '-')}-latest"
                         }

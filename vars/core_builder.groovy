@@ -83,10 +83,16 @@ def call(Map config) {
                             """,
                             returnStdout: true
                         ).trim()
+                        randomContainerID = sh(
+                            script: "python3 -c 'import uuid; print(str(uuid.uuid4()).split(\"-\")[0])'",
+                            returnStdout: true
+                        ).trim()
 
                         // Define variable for container build
-                        config.b_config.imageTag = commitID
+                        config.b_config.imageTag = commitID + "R" + randomContainerID
                         config.b_config.imageLatestTag = "latest"
+
+                        config.commitID = commitID + "R" + randomContainerID
 
                         if ( config.containsKey("overrideImageTag" && config.overrideImageTag ) ) {
                             newTagPart = sh(

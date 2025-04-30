@@ -32,7 +32,7 @@ def call(Map config) {
 
         if ( it.containsKey('copyToContext') ) {
             it.copyToContext.each { ti ->
-                def from = ti.from.replace("{commit-id}", config.b_config.imageTag)
+                def from = ti.from.replace("{commit-id}", config.b_config.originalCommitID)
                 def to = ti.to.replace("{context-path}", it.contextPath)
 
                 sh """

@@ -91,6 +91,7 @@ def call(Map config) {
                         // Define variable for container build
                         config.b_config.imageTag = commitID + "R" + randomContainerID
                         config.b_config.imageLatestTag = "latest"
+                        config.b_config.originalCommitID = commitID
 
                         config.commitID = commitID + "R" + randomContainerID
 

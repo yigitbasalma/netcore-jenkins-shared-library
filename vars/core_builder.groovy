@@ -89,11 +89,13 @@ def call(Map config) {
                         ).trim()
 
                         // Define variable for container build
-                        config.b_config.imageTag = commitID + "R" + randomContainerID
+                        // config.b_config.imageTag = commitID + "R" + randomContainerID
+                        config.b_config.imageTag = commitID
                         config.b_config.imageLatestTag = "latest"
                         config.b_config.originalCommitID = commitID
 
-                        config.commitID = commitID + "R" + randomContainerID
+                        // config.commitID = commitID + "R" + randomContainerID
+                        config.commitID = commitID
 
                         if ( config.containsKey("overrideImageTag" && config.overrideImageTag ) ) {
                             newTagPart = sh(
@@ -108,8 +110,6 @@ def call(Map config) {
                         if ( config.scope == "branch" && !config.permit_trigger_branch.contains(config.target_branch) ) {
                             config.b_config.imageLatestTag = "${config.target_branch.replace('/', '-')}-latest"
                         }
-
-                        config.commitID = commitID
 
                         if ( config.b_config.containsKey("sequentialDeploymentMapping") ) {
                             config.sequential_deployment_mapping = config.b_config.sequentialDeploymentMapping[config.target_branch]

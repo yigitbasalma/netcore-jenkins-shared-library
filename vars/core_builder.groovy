@@ -89,11 +89,13 @@ def call(Map config) {
                         ).trim()
 
                         // Define variable for container build
-                        config.b_config.imageTag = commitID + "R" + randomContainerID
+                        // config.b_config.imageTag = commitID + "R" + randomContainerID
+                        config.b_config.imageTag = commitID
                         config.b_config.imageLatestTag = "latest"
                         config.b_config.originalCommitID = commitID
 
-                        config.commitID = commitID + "R" + randomContainerID
+                        // config.commitID = commitID + "R" + randomContainerID
+                        config.commitID = commitID
 
                         writeFile file: 'result.txt', text: config.b_config.imageTag
                         archiveArtifacts artifacts: 'result.txt'

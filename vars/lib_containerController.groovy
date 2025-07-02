@@ -53,7 +53,7 @@ def call(Map config) {
                     script {
                         try {
                             sh """
-                            docker build --rm  \
+                            docker build --rm --no-cache \
                                 -t ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag} \
                                 -t ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageLatestTag} \
                                 ${extraParams.unique().join(" ")} \

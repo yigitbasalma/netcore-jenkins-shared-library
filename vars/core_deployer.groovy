@@ -84,7 +84,9 @@ def call(Map config) {
                             def currentMinute = now.format('mm', TimeZone.getTimeZone('Europe/Istanbul')) as int
 
                             if (currentHour < 23 || (currentHour == 23 && currentMinute < 30)) {
-                                error("Build aborted: Current time is before 23:30")
+                                currentBuild.result = "ABORTED"
+                                buildDescription("Error: Current time is before 23:30.")
+                                error("Build aborted: Current time is before 23:30.")
                             }
                         }
                     }

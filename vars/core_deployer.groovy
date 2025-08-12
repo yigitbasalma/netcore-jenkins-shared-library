@@ -76,6 +76,17 @@ def call(Map config) {
                         if ( config.containsKey("permit_trigger_branches") ) {
                             config.permit_trigger_branch = config.permit_trigger_branches
                         }
+
+                        // If environment is production, prevent early deployment
+                        if ( config.environment == "production" ) {
+                            def now = new Date()
+                            def currentHour = now.format('HH', TimeZone.getTimeZone('Europe/Istanbul')) as int
+                            def currentMinute = now.format('mm', TimeZone.getTimeZone('Europe/Istanbul')) as int
+
+                            if (currentHour < 23 || (currentHour == 23 && currentMinute < 30)) {
+                                error("Build aborted: Current time is before 23:30")
+                            }
+                        }
                     }
                 }
             }

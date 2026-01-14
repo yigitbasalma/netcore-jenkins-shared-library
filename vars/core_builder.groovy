@@ -99,7 +99,7 @@ def call(Map config) {
                         writeFile file: 'result.txt', text: config.b_config.imageTag
                         archiveArtifacts artifacts: 'result.txt'
 
-                        if ( config.containsKey("overrideImageTag" && config.overrideImageTag ) ) {
+                        if ( config.containsKey("overrideImageTag") && config.overrideImageTag ) {
                             newTagPart = sh(
                                 script: "python3 -c 'import datetime; print(datetime.datetime.now().strftime(\"%Y%m%d%H%M%S\"))'",
                                 returnStdout: true

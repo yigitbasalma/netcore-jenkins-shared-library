@@ -21,6 +21,7 @@ def call(Map config) {
     config.b_config.containerConfig.each { it ->
         def extraParams = []
         def buildArgs = []
+        def overridedImageTag = ""
 
         // Environments
         def repoName = it.name.replace("_", "-").toLowerCase()
@@ -45,6 +46,10 @@ def call(Map config) {
             extraParams.add("--no-cache")
         }
 
+        if ( config.containsKey("overrideImageTag") && config.overrideImageTag ) {
+            overridedImageTag = "-t ${container_repository}/${repoName.toLowerCase()}:${config.b_config.overrideImageTag}"
+        }
+
         containerImages.add("${container_repository}/${repoName}:${config.b_config.imageTag} ${dockerFilePath}")
 
         builds["${repoName}"] = {
@@ -56,6 +61,7 @@ def call(Map config) {
                             docker build --rm --no-cache \
                                 -t ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageTag} \
                                 -t ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageLatestTag} \
+                                ${overridedImageTag} \
                                 ${extraParams.unique().join(" ")} \
                                 ${buildArgs.unique().join(" ")} \
                                 -f ${dockerFilePath} \
@@ -87,6 +93,13 @@ def call(Map config) {
         def repoName = it.name
 
         withCredentials([[$class:"UsernamePasswordMultiBinding", credentialsId: "user-nexus", usernameVariable: "USERNAME", passwordVariable: "PASSWORD"]]) {
+            if ( config.containsKey("overrideImageTag") && config.overrideImageTag ) {
+               sh """
+               docker login --username $USERNAME --password $PASSWORD ${container_repository}
+                  docker push ${container_repository}/${repoName.toLowerCase()}:${config.b_config.overrideImageTag} && \
+                  docker push ${container_repository}/${repoName.toLowerCase()}:${config.b_config.overrideImageTag}
+               """
+            }
             sh """
             docker login --username $USERNAME --password $PASSWORD ${container_repository}
                 docker push ${container_repository}/${repoName.toLowerCase()}:${config.b_config.imageLatestTag} && \

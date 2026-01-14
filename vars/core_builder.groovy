@@ -105,8 +105,8 @@ def call(Map config) {
                                 returnStdout: true
                             ).trim()
 
-                            config.b_config.imageTag = newTagPart + commitID
-                            config.b_config.imageLatestTag = newTagPart + "latest"
+                            config.b_config.overrideImageTag = newTagPart + "_" + commitID
+                            // config.b_config.imageLatestTag = newTagPart + "latest"
                         }
 
                         if ( config.scope == "branch" && !config.permit_trigger_branch.contains(config.target_branch) ) {

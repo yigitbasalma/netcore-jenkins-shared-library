@@ -25,8 +25,12 @@ def argocd(Map config, String image, Map r_config, String containerRepository) {
     withCredentials([sshUserPrivateKey(credentialsId: config.argocd_credentials_id, keyFileVariable: 'sshKeyFile')]) {
         // Change image version on argocd repo and push
         sh "chmod 600 ${sshKeyFile}"
+        image_name = r_config.name
+        if ( r_config.containsKey("imageName") ) {
+            image_name = r_config.imageName
+        }
         sh """
-        ${config.script_base}/argocd/argocd.py --image "${containerRepository}/${r_config.name}:${image}" -r ${r_config.repo} --application-path ${path} --environment ${config.environment} --key-file "${sshKeyFile}"
+        ${config.script_base}/argocd/argocd.py --image "${containerRepository}/${image_name}:${image}" -r ${r_config.repo} --application-path ${path} --environment ${config.environment} --key-file "${sshKeyFile}"
         """
     }
 

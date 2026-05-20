@@ -4,7 +4,7 @@ def call(Map config) {
         def full_version
         if ( params.BRANCH ==~ /[pP]roduction/ ) {
             full_version = sh(
-                script: """python3 -c 'import sys,yaml,os; from datetime import datetime; b=int(os.environ["BUILD_NUMBER"]); t=datetime.now(); major=yaml.load(open("${config.config_file}"),Loader=yaml.CLoader)["project"]["version"]; print(f"{major}.{b//100}.{b%100}.{t.year-2000}{t.strftime(\"%j\")}")'""",
+                script: """python3 -c 'import sys,yaml,os; from datetime import datetime; b=int(os.environ["BUILD_NUMBER"]); t=datetime.now(); doy=t.strftime("%j"); major=yaml.load(open("${config.config_file}"),Loader=yaml.CLoader)["project"]["version"]; print(f"{major}.{b//100}.{b%100}.{t.year-2000}{doy}")'""",
                 returnStdout: true
             ).trim()
         } else {
